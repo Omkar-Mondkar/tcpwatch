@@ -9,6 +9,7 @@ new packets appended by tcpdump are parsed as they arrive.
   python main.py --cli live.pcap                # CLI, table output
   python main.py --cli live.pcap --no-follow -f csv -o out.csv
   python main.py --cli live.pcap -d ';' -F id,user,action --grep login
+  python main.py --cli live.pcap -m keyvalue -F Level,Time,Msg --keys LTP,Token -f csv
   tcpdump -i any -U -w - | python main.py --cli -
 """
 import argparse, os, sys
@@ -28,6 +29,7 @@ def parser():
                    help='patterns file (default: patterns.json next to main.py)')
     g.add_argument('-p', '--profile', help='pattern profile to use')
     g.add_argument('--list-profiles', action='store_true', help='list profiles and exit')
+    g.add_argument('-m', '--mode', choices=['positional', 'keyvalue'], help='positional fields, or leading fields + key|value pairs')
     g.add_argument('-d', '--delimiter', help="override delimiter (e.g. '|', ';', '\\t')")
     g.add_argument('-F', '--fields', help='override field names, comma separated')
     g.add_argument('-r', '--regex', help='override record regex (group 1 = record)')
@@ -38,6 +40,7 @@ def parser():
     g.add_argument('-f', '--format', choices=['table', 'csv', 'tsv', 'json'], default='table', help='default: table')
     g.add_argument('-o', '--output', help='write to file instead of stdout')
     g.add_argument('-n', '--count', type=int, help='stop after N output rows')
+    g.add_argument('--keys', help='keyvalue mode, table/csv/tsv: comma separated keys to show as columns (default: one data column of k=v)')
     g.add_argument('--grep', help='only output rows containing this text (case-insensitive)')
     g.add_argument('--unparsed', action='store_true', help='also output packets whose payload did not match')
     g.add_argument('--no-meta', action='store_true', help='only the parsed fields, no #/time/src/dst/proto/len')

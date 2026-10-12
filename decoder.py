@@ -67,7 +67,9 @@ def _decode(link, d):
         name = 'UDP'
         sport = int.from_bytes(d[l4:l4 + 2], 'big')
         dport = int.from_bytes(d[l4 + 2:l4 + 4], 'big')
-        payload = d[l4 + 8:end]
+        ulen = int.from_bytes(d[l4 + 4:l4 + 6], 'big')
+        uend = min(l4 + ulen, end) if ulen >= 8 else end
+        payload = d[l4 + 8:uend]
     elif proto in (1, 58):
         name = 'ICMP' if proto == 1 else 'ICMPv6'
     elif proto >= 0:

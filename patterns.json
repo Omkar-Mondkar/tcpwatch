@@ -1,0 +1,29 @@
+{
+  "active": "Key-value log (Level|Time|Msg|k|v|k|v...)",
+  "profiles": {
+    "Key-value log (Level|Time|Msg|k|v|k|v...)": {
+      "mode": "keyvalue",
+      "delimiter": "|",
+      "fields": [
+        "Level",
+        "Time",
+        "Msg"
+      ],
+      "record_regex": "",
+      "proto": "any",
+      "port": 0,
+      "min_fields": 2,
+      "strip": true
+    },
+    "Pipe (|) positional": {
+      "mode": "positional",
+      "delimiter": "|",
+      "fields": [],
+      "record_regex": "",
+      "proto": "any",
+      "port": 0,
+      "min_fields": 2,
+      "strip": true
+    }
+  }
+}
